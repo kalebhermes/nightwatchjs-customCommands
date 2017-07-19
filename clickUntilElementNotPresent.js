@@ -14,8 +14,6 @@ util.inherits(ClickUntilElementNotPresent, events.EventEmitter);
 
 ClickUntilElementNotPresent.prototype.command = function (element) {
 
-  console.log(element);
-
   var self = this;
   var message;
 
@@ -38,7 +36,7 @@ ClickUntilElementNotPresent.prototype.clickElement = function (element, callback
   var promises =[];
 
   promises.push(new Promise(function(resolve) {
-    self.api.element(element.locateStrategy, element.selector, function(result) {
+    self.api.element('xpath', element, function(result) {
       resolve(result.status != -1);
     });
   }));
@@ -50,7 +48,7 @@ ClickUntilElementNotPresent.prototype.clickElement = function (element, callback
         self.api.click(element);
         setTimeout(function() {
           self.clickElement(element, callback);
-        }, 500);
+        }, 2000);
       } else if (visibleAndPresent == false) {
         callback(true);
       } else {
@@ -61,7 +59,7 @@ ClickUntilElementNotPresent.prototype.clickElement = function (element, callback
       self.api.click(element);
       setTimeout(function () {
         self.clickElement(element, callback);
-      }, 500);
+      }, 2000);
     });
 };
 
